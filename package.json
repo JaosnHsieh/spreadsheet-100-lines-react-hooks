@@ -1,0 +1,17 @@
+{
+  "name": "spreadsheet-100lines",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "parcel index.html"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "parcel": "^1.11.0",
+    "react": "^16.8.2",
+    "react-dom": "^16.8.2"
+  }
+}
