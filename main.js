@@ -4,8 +4,8 @@
  * https://github.com/aosabook/500lines/tree/master/spreadsheet
  */
 
-import React, { useState, useEffect } from "react";
-import ReactDom from "react-dom";
+import React, { useState, useEffect } from 'react';
+import ReactDom from 'react-dom';
 const range = (cur, end) => {
   const result = [];
   while (cur <= end) {
@@ -16,15 +16,15 @@ const range = (cur, end) => {
 };
 const sheetDefault = {
   A1: 1874,
-  B1: "+",
+  B1: '+',
   C1: 2046,
-  D1: "⇒",
-  E1: "=A1+C1"
+  D1: '⇒',
+  E1: '=A1+C1',
 };
 
-const initSheet = JSON.parse(localStorage.getItem("")) || sheetDefault;
+const initSheet = JSON.parse(localStorage.getItem('')) || sheetDefault;
 
-const Sheet = props => {
+const Sheet = (props) => {
   const [worker, setWorker] = useState(props.worker);
   const [sheet, setSheet] = useState(initSheet);
   const [vals, setVals] = useState(initSheet);
@@ -32,19 +32,19 @@ const Sheet = props => {
   const [didMount, setDidMount] = useState(false);
 
   const rows = range(1, 20);
-  const cols = range("A", "H");
+  const cols = range('A', 'H');
 
-  const calc = sheet => {
+  const calc = (sheet) => {
     setSheet(sheet);
     const timeout = setTimeout(() => {
       worker.terminate();
-      setWorker(new Worker("worker.js"));
+      setWorker(new Worker('worker.js'));
     }, 99);
     worker.onmessage = ({ data: [newErrs, newVals] }) => {
       clearTimeout(timeout);
       setErrs(newErrs);
       setVals(newVals);
-      localStorage.setItem("", JSON.stringify(sheet));
+      localStorage.setItem('', JSON.stringify(sheet));
     };
     worker.postMessage(sheet);
   };
@@ -76,13 +76,13 @@ const Sheet = props => {
               <td
                 key={j}
                 className={
-                  sheet[col + row] && sheet[col + row] === "=" ? "formula" : ""
+                  sheet[col + row] && sheet[col + row] === '=' ? 'formula' : ''
                 }
               >
                 <input
                   id={`${col + row}`}
                   type="text"
-                  value={sheet[col + row] || ""}
+                  value={sheet[col + row] || ''}
                   onChange={({ target: { id, value } }) => {
                     calc({ ...sheet, [id]: value });
                   }}
@@ -93,7 +93,7 @@ const Sheet = props => {
                       case 13:
                         const direction = which === 38 ? row - 1 : row + 1;
                         const cell = document.querySelector(
-                          `#${col + direction}`
+                          `#${col + direction}`,
                         );
                         if (cell) {
                           cell.focus();
@@ -103,7 +103,7 @@ const Sheet = props => {
                 />
                 <div
                   className={
-                    errs[col + row] ? "err" : vals[col + row] ? "text" : ""
+                    errs[col + row] ? 'err' : vals[col + row] ? 'text' : ''
                   }
                 >
                   {errs[col + row] || vals[col + row]}
@@ -118,9 +118,9 @@ const Sheet = props => {
 };
 
 window.init = () => {
-  const worker = new Worker("worker.js");
+  const worker = new Worker('./worker.js');
   worker.onmessage = () => {
-    ReactDom.render(<Sheet worker={worker} />, document.getElementById("root"));
+    ReactDom.render(<Sheet worker={worker} />, document.getElementById('root'));
   };
   worker.postMessage(null);
 };
